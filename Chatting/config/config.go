@@ -20,7 +20,7 @@ type configStruct struct {
 
 func ReadConfig() error {
 	fmt.Println("Reading config file...")
-	file, err := ioutil.ReadFile("./config.json")
+	file, err := ioutil.ReadFile("./config/config.json")
 	if err != nil {
 		fmt.Println(err.Error())
 		return err
