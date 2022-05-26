@@ -11,9 +11,16 @@ import (
 var BotId string
 var goBot *discordgo.Session
 
-func Start() {
+type Copypastas struct {
+	Copypastas []Copypasta `json:"copypastas"`
+}
 
-	//creating new bot session
+type Copypasta struct {
+	name string `json:"name"`
+	data string `json:"data"`
+}
+
+func Start() {
 	goBot, err := discordgo.New("Bot " + config.Token)
 
 	if err != nil {
@@ -44,13 +51,43 @@ func Start() {
 
 //Definition of messageHandler function it takes two arguments first one is discordgo.Session which is s , second one is discordgo.MessageCreate which is m.
 func messageHandler(session *discordgo.Session, message *discordgo.MessageCreate) {
-	//Bot musn't reply to it's own messages , to confirm it we perform this check.
+
+	// if messageInput == config.BotPrefix+"" {
+	// 	_, err = session.ChannelMessageSend(message.ChannelID, "")
+	// 	fmt.Println(err)
+	// 	fmt.Println("")
+	// }
+
+	messageInput := strings.ToLower(message.Content)
+	var err error
+
 	if message.Author.ID == BotId {
 		return
 	}
-	//If we message ping to our bot in our discord it will return us pong .
-	if message.Content == strings.ToLower("ping") {
-		_, _ = session.ChannelMessageSend(message.ChannelID, "pong")
-		fmt.Println("ponged")
+
+	if messageInput == config.BotPrefix+"ping" {
+		_, err = session.ChannelMessageSend(message.ChannelID, "pong")
+		fmt.Println(err)
+		fmt.Println("pong")
 	}
+
+	if messageInput == config.BotPrefix+"scaryping" {
+		_, err = session.ChannelMessageSend(message.ChannelID, scaryPing)
+		fmt.Println(err)
+		fmt.Println("scaryping")
+	}
+
+	if messageInput == config.BotPrefix+"existentialping" {
+		_, err = session.ChannelMessageSend(message.ChannelID, existentialPing)
+		_, err = session.ChannelMessageSend(message.ChannelID, existentialPing2)
+		fmt.Println(err)
+		fmt.Println("existentialping")
+	}
+
+	if messageInput == config.BotPrefix+"help" {
+		_, err = session.ChannelMessageSend(message.ChannelID, "Currently I have the following commands: \n!ping\n!scaryping\n!existentialping\nMore commands are coming pogu")
+		fmt.Println(err)
+		fmt.Println("help")
+	}
+
 }
