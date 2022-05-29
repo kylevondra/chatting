@@ -6,17 +6,17 @@ import (
 	"io/ioutil"
 )
 
+type configStruct struct {
+	Token           string `json : "Token"`
+	BotPrefix       string `json : "BotPrefix"`
+	CopypastaPrefix string `json : "CopypastaPrefix"`
+}
+
 var (
 	Token     string
 	BotPrefix string
 	config    *configStruct
 )
-
-//TODO: figure out what the tick mark is
-type configStruct struct {
-	Token     string `json : "Token"`
-	BotPrefix string `json : "BotPrefix"`
-}
 
 func ReadConfig() error {
 	fmt.Println("Reading config file...")
